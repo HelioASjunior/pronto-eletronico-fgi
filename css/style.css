@@ -1,0 +1,512 @@
+/* =========================================================
+   Estilo da tela de Login - PontoEletrônico
+   Arquivo: css/style.css
+   Ligado ao index.html pela tag <link> dentro do <head>
+   ========================================================= */
+
+
+/* ---------- 1. Variáveis de cores e medidas ---------- */
+/* Guardamos as cores em variáveis para reaproveitar em vários
+   lugares. Para trocar a cor do site, basta mudar aqui. */
+:root {
+    --verde: #0f7b3e;         /* verde principal (botão, logo, link) */
+    --verde-escuro: #0b6431;  /* verde do botão quando passa o mouse */
+    --verde-claro: #e8f5ec;   /* fundo do botão Limpar no hover */
+    --texto: #1b1f23;         /* cor dos textos principais */
+    --texto-suave: #6b7280;   /* cinza dos textos secundários */
+    --borda: #dfe3e8;         /* cor das bordas dos campos */
+    --branco: #ffffff;        /* fundo do card */
+    --fundo: #f3f6f4;         /* fundo da página */
+    --raio: 10px;             /* arredondamento dos campos e botões */
+}
+
+
+/* ---------- 2. Reset básico ---------- */
+/* Zera as margens padrão do navegador e faz o padding/borda
+   ficarem "dentro" da largura do elemento (box-sizing). */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+/* ---------- 3. Fundo da página ---------- */
+/* O <html> faz o papel de "fundo" e centraliza o card na tela.
+   Os círculos verdes decorativos são desenhados com radial-gradient. */
+html {
+    min-height: 100%;               /* ocupa a altura toda da tela */
+    display: flex;                  /* ativa o flexbox para centralizar */
+    align-items: center;            /* centraliza na vertical */
+    justify-content: center;        /* centraliza na horizontal */
+    padding: 24px 16px;             /* espaço entre o card e a borda da tela */
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: var(--fundo);
+    /* Três círculos: dois no canto superior direito e um no inferior esquerdo */
+    background-image:
+        radial-gradient(circle at 100% 0%, rgba(15, 123, 62, 0.18) 0 180px, transparent 181px),
+        radial-gradient(circle at 100% 0%, rgba(15, 123, 62, 0.10) 0 280px, transparent 281px),
+        radial-gradient(circle at 0% 100%, rgba(15, 123, 62, 0.14) 0 220px, transparent 221px);
+    background-attachment: fixed;   /* os círculos não rolam junto com a página */
+}
+
+
+/* ---------- 4. Card branco ---------- */
+/* O próprio <body> vira o card que envolve todo o conteúdo,
+   assim não foi preciso criar uma <div> nova no HTML.
+   O flex com quebra de linha (wrap) permite colocar as duas
+   partes do logo ("Ponto" e "Eletrônico") lado a lado. */
+body {
+    width: 100%;
+    max-width: 460px;                               /* largura máxima do card */
+    background-color: var(--branco);
+    border-radius: 16px;                            /* cantos arredondados */
+    padding: 48px 44px;                             /* espaço interno do card */
+    box-shadow: 0 20px 50px rgba(17, 36, 26, 0.10); /* sombra suave */
+    color: var(--texto);
+    display: flex;                                  /* itens do card em flex */
+    flex-wrap: wrap;                                /* permite quebrar linha */
+    align-items: flex-start;
+}
+
+/* Título e formulário ocupam a linha inteira do card.
+   O "order" define a ordem em que aparecem (logo vem antes). */
+h1 {
+    width: 100%;
+    order: 3;
+}
+
+form {
+    width: 100%;
+    order: 4;
+}
+
+
+/* ---------- 5. Logo (criado só com CSS) ---------- */
+/* O logo é dividido em duas partes, igual ao modelo:
+   - body::before -> ícone de relógio + "Ponto" (cor escura)
+   - body::after  -> "Eletrônico" (cor verde)
+   ::before e ::after inserem conteúdo pela propriedade "content".
+   O ::after normalmente fica no final do body, mas com order: 2
+   ele sobe e fica logo depois do ::before, na mesma linha. */
+body::before {
+    content: "Ponto";             /* primeira parte do nome */
+    order: 1;                     /* primeiro item do card */
+    padding-left: 68px;           /* espaço para o ícone à esquerda */
+    margin-bottom: 40px;          /* distância até o título */
+    min-height: 56px;
+    line-height: 56px;            /* alinha o texto no meio do ícone */
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--texto);
+    letter-spacing: -0.5px;
+    /* Ícone: relógio verde (círculo + ponteiros) feito em SVG */
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f7b3e' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10.5'/%3E%3Cpath d='M11 6.5v5.5l3.5 3.5'/%3E%3C/svg%3E")
+        no-repeat left center / 56px 56px;
+}
+
+body::after {
+    content: "Eletrônico";        /* segunda parte do nome */
+    order: 2;                     /* fica logo depois do "Ponto" */
+    min-height: 56px;
+    line-height: 56px;
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--verde);          /* parte verde do logo */
+    letter-spacing: -0.5px;
+}
+
+
+/* ---------- 6. Título e subtítulo ---------- */
+/* Título "Bem-vindo!" grande e em negrito */
+h1 {
+    font-size: 34px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 28px;          /* distância até o formulário */
+}
+
+/* ::after cria o subtítulo cinza logo abaixo do título */
+h1::after {
+    content: "Faça login para acessar o sistema de ponto eletrônico.";
+    display: block;               /* joga o texto para a linha de baixo */
+    margin-top: 8px;
+    font-size: 16px;
+    font-weight: 400;             /* tira o negrito herdado do h1 */
+    line-height: 1.5;
+    letter-spacing: 0;
+    color: var(--texto-suave);
+}
+
+
+/* ---------- 7. Removendo os <br> ---------- */
+/* Os <br> do HTML são escondidos e os espaços entre os
+   elementos passam a ser feitos com margin (mais controle). */
+br {
+    display: none;
+}
+
+
+/* ---------- 8. Campos do formulário ---------- */
+/* Cada <div> do formulário ganha um espaço embaixo */
+form > div {
+    margin-bottom: 20px;
+}
+
+/* Rótulos "Usuário:" e "Senha:" acima dos campos */
+label {
+    display: block;               /* fica em cima do campo */
+    margin-bottom: 8px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+/* Estilo comum dos campos de texto e senha.
+   O seletor [type="..."] evita que o checkbox "Lembrar de mim"
+   também receba este estilo. */
+input[type="text"],
+input[type="password"] {
+    width: 100%;                  /* ocupa toda a largura do card */
+    height: 52px;
+    padding: 0 16px 0 48px;       /* 48px à esquerda para caber o ícone */
+    font-size: 15px;
+    font-family: inherit;         /* usa a mesma fonte da página */
+    color: var(--texto);
+    border: 1px solid var(--borda);
+    border-radius: var(--raio);
+    background-color: var(--branco);
+    background-repeat: no-repeat; /* ícone aparece só uma vez */
+    background-position: 16px center;
+    background-size: 20px 20px;
+    transition: border-color 0.2s, box-shadow 0.2s; /* animação suave no foco */
+}
+
+/* Cor do texto de exemplo (placeholder) */
+input::placeholder {
+    color: #9aa1a9;
+}
+
+/* Efeito quando o campo está selecionado (clicado) */
+input[type="text"]:focus,
+input[type="password"]:focus {
+    outline: none;                                  /* tira a borda padrão do navegador */
+    border-color: var(--verde);                     /* borda fica verde */
+    box-shadow: 0 0 0 4px rgba(15, 123, 62, 0.15);  /* "brilho" verde em volta */
+}
+
+/* Ícone de usuário (pessoa) dentro do campo #usuario */
+#usuario {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='8' r='4'/%3E%3Cpath d='M4 21c0-4 3.6-7 8-7s8 3 8 7'/%3E%3C/svg%3E");
+}
+
+/* Ícone de senha (cadeado) dentro do campo #senha */
+#senha {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='4' y='10' width='16' height='11' rx='2'/%3E%3Cpath d='M8 10V7a4 4 0 0 1 8 0v3'/%3E%3Ccircle cx='12' cy='15.5' r='1.3'/%3E%3C/svg%3E");
+}
+
+
+/* ---------- 9. Botões ---------- */
+/* A última <div> do form guarda os botões. Com flex + order,
+   o "Entrar" aparece primeiro, sem mudar a ordem no HTML. */
+form > div:last-child {
+    display: flex;
+    flex-direction: column;       /* um botão embaixo do outro */
+    gap: 12px;                    /* espaço entre os botões */
+    margin-top: 28px;
+    margin-bottom: 0;
+}
+
+/* Estilo comum dos dois botões (Entrar e Limpar).
+   "form > div:last-child button" pega só os botões dessa div,
+   assim o botão do olho da senha não é afetado. */
+form > div:last-child button {
+    width: 100%;
+    height: 54px;
+    font-size: 17px;
+    font-weight: 600;
+    font-family: inherit;
+    border-radius: var(--raio);
+    cursor: pointer;              /* mãozinha ao passar o mouse */
+    transition: background-color 0.2s, color 0.2s, transform 0.1s;
+}
+
+/* Efeito de "afundar" levemente ao clicar */
+form > div:last-child button:active {
+    transform: scale(0.99);
+}
+
+/* Botão principal: Entrar (verde) */
+button[type="submit"] {
+    order: 1;                     /* aparece em primeiro */
+    color: var(--branco);
+    background-color: var(--verde);
+    border: none;
+}
+
+/* Seta → depois do texto "Entrar" (\2192 é o código da seta) */
+button[type="submit"]::after {
+    content: "\2192";
+    margin-left: 12px;
+    font-size: 20px;
+}
+
+/* Botão Entrar fica mais escuro ao passar o mouse */
+button[type="submit"]:hover {
+    background-color: var(--verde-escuro);
+}
+
+/* Botão secundário: Limpar (branco com borda) */
+button[type="reset"] {
+    order: 2;                     /* aparece em segundo */
+    color: var(--verde);
+    background-color: var(--branco);
+    border: 1px solid var(--borda);
+}
+
+/* Botão Limpar ganha fundo verde claro ao passar o mouse */
+button[type="reset"]:hover {
+    background-color: var(--verde-claro);
+    border-color: var(--verde);
+}
+
+
+/* ---------- 10. Lembrar de mim + Esqueceu a senha (NOVO) ---------- */
+/* Linha com o checkbox à esquerda e o link à direita.
+   "space-between" empurra um item para cada ponta. */
+.opcoes {
+    display: flex;
+    justify-content: space-between;  /* um em cada lado */
+    align-items: center;             /* alinha na vertical */
+    margin-top: -4px;
+}
+
+/* Label do checkbox: fica na mesma linha do quadradinho */
+.lembrar {
+    display: flex;
+    align-items: center;
+    gap: 10px;                       /* espaço entre o quadrado e o texto */
+    margin-bottom: 0;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+/* O próprio checkbox */
+.lembrar input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--verde);      /* quadradinho fica verde quando marcado */
+    cursor: pointer;
+}
+
+/* Link "Esqueceu a senha?" */
+.esqueceu {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--verde);
+    text-decoration: none;
+}
+
+.esqueceu:hover {
+    text-decoration: underline;
+}
+
+
+/* ---------- 11. Olho para mostrar/ocultar a senha (NOVO) ---------- */
+/* A div .campo-senha envolve o input e o botão do olho.
+   "position: relative" serve de referência para posicionar o olho. */
+.campo-senha {
+    position: relative;
+}
+
+/* Deixa espaço à direita do campo para o olho não ficar em cima do texto */
+.campo-senha input {
+    padding-right: 52px;
+}
+
+/* Botão do olho: fica "flutuando" dentro do campo, à direita */
+.ver-senha {
+    position: absolute;              /* posiciona em relação ao .campo-senha */
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);     /* centraliza na vertical */
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    /* Ícone de olho aberto (senha escondida) */
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/svg%3E")
+        no-repeat center / 22px 22px;
+}
+
+.ver-senha:hover {
+    background-color: var(--verde-claro);
+}
+
+/* Quando o JavaScript adiciona a classe "visivel" (senha aparecendo),
+   o ícone troca para o olho riscado */
+.ver-senha.visivel {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f7b3e' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3Cpath d='M3 3l18 18'/%3E%3C/svg%3E");
+}
+
+
+/* ---------- 12. Painel lateral direito (NOVO) ---------- */
+/* Em telas grandes, o card fica na metade esquerda e o painel
+   na metade direita. O padding-right de 50vw (metade da largura
+   da tela) "empurra" o card para o lado esquerdo. */
+@media (min-width: 901px) {
+    html {
+        padding-right: 50vw;
+    }
+}
+
+/* O painel fica fixo na metade direita da tela.
+   "position: fixed" tira ele de dentro do card (body). */
+.painel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 50vw;                     /* metade da largura da tela */
+    height: 100vh;                   /* altura toda da tela */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;         /* conteúdo no meio do painel */
+    gap: 48px;                       /* espaço entre o logo e a lista */
+    padding: 40px;
+    text-align: center;
+    /* Para usar uma foto de fundo, como no modelo, troque por:
+       background: url("../img/fundo.jpg") center / cover; */
+    background: linear-gradient(90deg, rgba(232, 245, 236, 0), rgba(232, 245, 236, 0.6));
+}
+
+/* Ícone grande do relógio no topo do painel */
+.painel-icone {
+    width: 104px;
+    height: 104px;
+    margin: 0 auto 16px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f7b3e' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10.5'/%3E%3Cpath d='M11 6.5v5.5l3.5 3.5'/%3E%3C/svg%3E")
+        no-repeat center / contain;
+}
+
+/* Nome "PontoEletrônico" grande do painel */
+.painel-nome {
+    font-size: 40px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--texto);
+}
+
+/* O <span> dentro do nome deixa "Eletrônico" verde */
+.painel-nome span {
+    color: var(--verde);
+}
+
+/* Frase "Controle de jornada..." */
+.painel-slogan {
+    max-width: 300px;
+    margin: 8px auto 0;
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--texto-suave);
+}
+
+/* Lista de recursos: tira as bolinhas padrão da lista */
+.recursos {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    text-align: left;
+}
+
+/* Cada item: ícone redondo à esquerda e textos à direita (grid) */
+.recursos li {
+    display: grid;
+    grid-template-columns: 64px 1fr; /* coluna do ícone + coluna do texto */
+    column-gap: 22px;
+    align-items: center;
+}
+
+/* Círculo verde claro com o ícone, criado com ::before */
+.recursos li::before {
+    content: "";
+    grid-row: span 2;                /* ocupa as duas linhas (título e texto) */
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;              /* deixa redondo */
+    background-color: var(--verde-claro);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 28px 28px;
+}
+
+/* Título de cada recurso */
+.recursos strong {
+    font-size: 17px;
+    color: var(--texto);
+}
+
+/* Descrição de cada recurso */
+.recursos span {
+    font-size: 15px;
+    color: var(--texto-suave);
+}
+
+/* Ícone de raio (registro rápido) */
+.recurso-rapido::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f7b3e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M13 2 4 14h7l-1 8 9-12h-7z'/%3E%3C/svg%3E");
+}
+
+/* Ícone de gráfico (relatórios) */
+.recurso-relatorios::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f7b3e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 20h16M7 17v-5M11 17V8M15 17v-7M19 17V4'/%3E%3C/svg%3E");
+}
+
+/* Ícone de escudo (segurança) */
+.recurso-seguranca::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f7b3e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z'/%3E%3Cpath d='M12 9v6M9 12h6'/%3E%3C/svg%3E");
+}
+
+
+/* ---------- 13. Responsividade ---------- */
+/* Tablets e telas menores: não há espaço para o painel,
+   então ele é escondido e o card volta para o centro. */
+@media (max-width: 900px) {
+    .painel {
+        display: none;
+    }
+}
+
+/* Celular (até 480px): diminuímos espaços e tamanhos
+   para caber melhor na tela. */
+@media (max-width: 480px) {
+    html {
+        padding: 16px;
+    }
+
+    body {
+        padding: 32px 24px;
+    }
+
+    body::before,
+    body::after {
+        font-size: 24px;
+    }
+
+    body::before {
+        margin-bottom: 28px;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+
+    /* Checkbox e link um embaixo do outro se faltar espaço */
+    .opcoes {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+}
+
+

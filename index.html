@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - PontoEletrônico</title>
+    <!-- Liga o arquivo de estilo (CSS) que está na pasta css -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<!-- O body vira o card branco da tela de login (ver css/style.css) -->
+<body>
+    <!-- Título da página. O logo "PontoEletrônico" e o subtítulo são criados pelo CSS -->
+    <h1>Bem-vindo!</h1>
+    <!-- Formulário de login, será usado PHP para processar os dados -->
+    <form>
+        <!-- Campo de usuário (o ícone de pessoa vem do CSS) -->
+        <div>
+            <label for="usuario">Usuário:</label>
+            <input type="text"
+                id="usuario"
+                name="usuario"
+                placeholder="Digite seu usuário"
+                required>
+        </div>
+
+        <br>
+
+        <!-- Campo de senha (o ícone de cadeado vem do CSS) -->
+        <div>
+            <label for="senha">Senha:</label>
+            <!-- NOVO: div que agrupa o campo de senha e o botão do olho -->
+            <div class="campo-senha">
+                <input type="password"
+                    id="senha"
+                    name="senha"
+                    placeholder="Digite sua senha"
+                    required>
+                <!-- NOVO: botão do olho para mostrar/ocultar a senha (funciona com o js/script.js) -->
+                <!-- type="button" para não enviar o formulário ao clicar -->
+                <button type="button" class="ver-senha" aria-label="Mostrar senha"></button>
+            </div>
+        </div>
+        <br>
+        <!-- NOVO: linha com "Lembrar de mim" (checkbox) e o link "Esqueceu a senha?" -->
+        <div class="opcoes">
+            <label class="lembrar">
+                <input type="checkbox" name="lembrar">
+                Lembrar de mim
+            </label>
+            <a href="#" class="esqueceu">Esqueceu a senha?</a>
+        </div>
+        <!-- Botões. O CSS mostra o "Entrar" primeiro, sem mudar a ordem aqui -->
+        <div>
+            <button type="reset">Limpar</button>
+            <button type="submit">Entrar</button>
+        </div>
+    </form>
+
+    <br>
+
+    <!-- REMOVIDO: link "Faça seu cadastro". O cadastro dos funcionários é feito
+         apenas pelo RH, dentro do sistema, e não pela tela de login -->
+    <!-- Removido também um </form> que estava sobrando depois do link -->
+
+    <!-- NOVO: painel lateral direito com a apresentação do sistema -->
+    <!-- Aparece só em telas grandes (no celular o CSS esconde) -->
+    <aside class="painel">
+        <!-- Logo grande: ícone de relógio (CSS), nome e frase -->
+        <div>
+            <div class="painel-icone"></div>
+            <p class="painel-nome">Ponto<span>Eletrônico</span></p>
+            <p class="painel-slogan">Controle de jornada de forma simples e segura</p>
+        </div>
+
+        <!-- Lista de recursos do sistema (os ícones vêm do CSS) -->
+        <ul class="recursos">
+            <li class="recurso-rapido">
+                <strong>Registro de ponto rápido</strong>
+                <span>Mais agilidade no dia a dia</span>
+            </li>
+            <li class="recurso-relatorios">
+                <strong>Relatórios completos</strong>
+                <span>Acompanhe sua jornada</span>
+            </li>
+            <li class="recurso-seguranca">
+                <strong>Segurança de dados</strong>
+                <span>Seus dados protegidos</span>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- NOVO: liga o arquivo JavaScript (olho da senha). Fica no final para carregar depois do HTML -->
+    <script src="js/script.js"></script>
+</body>
+</html>
