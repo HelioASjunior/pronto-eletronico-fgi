@@ -1,0 +1,611 @@
+/* =========================================================
+   Estilo das telas do funcionário - PontoEletrônico
+   Arquivo: css/painel.css
+   Ligado ao paginas/painel.html (Registrar Ponto) e ao
+   paginas/espelho.html (Espelho de Ponto) pela tag <link>
+   ========================================================= */
+
+
+/* ---------- 1. Variáveis de cores ---------- */
+/* Mesmas cores das outras telas, para manter o padrão do sistema */
+:root {
+    --verde: #0f7b3e;         /* verde principal */
+    --verde-escuro: #0b6431;  /* verde ao passar o mouse */
+    --verde-claro: #e8f5ec;   /* fundos verdes suaves (menu ativo, etiquetas) */
+    --vermelho: #dc3545;      /* marcações de saída */
+    --vermelho-claro: #fdecee;
+    --texto: #1b1f23;         /* textos principais */
+    --texto-suave: #6b7280;   /* textos secundários */
+    --borda: #e3e7e5;         /* bordas dos cards */
+    --branco: #ffffff;
+    --fundo: #f6f8f7;         /* fundo da página */
+    --raio: 8px;              /* arredondamento dos botões */
+}
+
+
+/* ---------- 2. Reset e base ---------- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* A página é dividida em duas colunas: menu (220px) e conteúdo (resto) */
+body {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    min-height: 100vh;
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 14px;
+    color: var(--texto);
+    background-color: var(--fundo);
+}
+
+
+/* ---------- 3. Menu lateral ---------- */
+/* Flex em coluna para o "Sair" poder ir para o final do menu */
+.menu {
+    position: sticky;              /* o menu fica parado ao rolar a página */
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 22px 14px;
+    background-color: var(--branco);
+    border-right: 1px solid var(--borda);
+}
+
+/* Logo: ícone de relógio (SVG de fundo) + "Ponto" escuro + "Eletrônico" verde */
+.logo {
+    padding-left: 38px;
+    margin: 0 0 28px 6px;
+    line-height: 28px;
+    font-size: 17px;
+    font-weight: 700;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f7b3e' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10.5'/%3E%3Cpath d='M11 6.5v5.5l3.5 3.5'/%3E%3C/svg%3E")
+        no-repeat left center / 28px 28px;
+}
+
+.logo span {
+    color: var(--verde);
+}
+
+/* Links do menu, um embaixo do outro */
+nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+nav a,
+.sair {
+    display: flex;
+    align-items: center;
+    gap: 12px;                     /* espaço entre o ícone e o texto */
+    padding: 10px 12px;
+    border-radius: var(--raio);
+    color: #374151;
+    text-decoration: none;
+    font-size: 14.5px;
+}
+
+nav a:hover,
+.sair:hover {
+    background-color: var(--fundo);
+}
+
+/* Links só do administrador (class="so-admin"): ficam escondidos e
+   aparecem quando o js/comum.js coloca a classe "admin" no <body> */
+body:not(.admin) .so-admin {
+    display: none;
+}
+
+/* Link da página atual fica verde */
+nav a.ativo {
+    color: var(--verde);
+    font-weight: 600;
+    background-color: var(--verde-claro);
+}
+
+/* margin-top: auto empurra o "Sair" para o final do menu */
+.sair {
+    margin-top: auto;
+}
+
+
+/* ---------- 4. Ícones ---------- */
+/* O "mask" recorta o desenho do SVG e pinta com a cor do texto
+   (currentColor). Cada classe i-... define seu desenho na variável --icone. */
+nav a::before,
+.sair::before {
+    content: "";
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;                /* o ícone não encolhe */
+    background-color: currentColor;
+    -webkit-mask: var(--icone) no-repeat center / contain;
+    mask: var(--icone) no-repeat center / contain;
+}
+
+/* Funcionários e Banco de Horas só aparecem no menu do administrador */
+.i-funcionarios {
+    --icone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='9' cy='8' r='3.5'/%3E%3Cpath d='M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6M16 4.5a3.5 3.5 0 0 1 0 7M18 14c2.2.6 3.5 2.7 3.5 6'/%3E%3C/svg%3E");
+}
+
+.i-banco {
+    --icone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 3h12M6 21h12M7 3v3l5 6 5-6V3M7 21v-3l5-6 5 6v3'/%3E%3C/svg%3E");
+}
+
+.i-ponto {
+    --icone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7v5l3 3'/%3E%3C/svg%3E");
+}
+
+.i-espelho {
+    --icone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 3H6v18h12V7zM14 3v4h4M9 12h6M9 16h6'/%3E%3C/svg%3E");
+}
+
+.i-sair {
+    --icone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10 4H5v16h5M14 8l4 4-4 4M18 12H9'/%3E%3C/svg%3E");
+}
+
+
+/* ---------- 5. Cabeçalho da página ---------- */
+main {
+    padding: 24px 28px;
+    min-width: 0;                  /* evita que a tabela "estoure" a coluna */
+}
+
+/* Saudação à esquerda e usuário à direita */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 4px;
+}
+
+header p {
+    color: var(--texto-suave);
+}
+
+/* Usuário logado: círculo verde com a inicial + nome e cargo */
+.usuario {
+    display: grid;
+    grid-template-columns: 40px auto;
+    column-gap: 10px;
+    align-items: center;
+    font-size: 12.5px;
+}
+
+/* attr(data-inicial) pega a letra escrita no HTML */
+.usuario::before {
+    content: attr(data-inicial);
+    grid-row: span 2;              /* o círculo ocupa as duas linhas */
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    line-height: 40px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--branco);
+    background-color: var(--verde);
+}
+
+.usuario strong {
+    display: block;
+    font-size: 14px;
+    color: var(--texto);
+}
+
+
+/* Mensagens do PHP: verde quando deu certo, vermelha quando deu erro */
+.mensagem {
+    margin-bottom: 20px;
+    padding: 12px 14px;
+    border-radius: var(--raio);
+    font-weight: 600;
+    color: var(--verde);
+    background-color: var(--verde-claro);
+}
+
+.mensagem.erro {
+    color: #b42318;
+    background-color: var(--vermelho-claro);
+}
+
+
+/* ---------- 6. Cards ---------- */
+/* Grid de 2 colunas: relógio e "Hoje" em cima, registros embaixo */
+.conteudo {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: 20px;
+}
+
+.card {
+    padding: 20px 22px;
+    border: 1px solid var(--borda);
+    border-radius: 12px;
+    background-color: var(--branco);
+    overflow-x: auto;              /* a tabela rola para o lado se faltar espaço */
+}
+
+/* O card de registros ocupa as duas colunas */
+.registros {
+    grid-column: span 2;
+}
+
+h2 {
+    font-size: 17px;
+}
+
+/* Título à esquerda e data/link à direita */
+.topo-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.topo-card span {
+    padding: 5px 10px;
+    border: 1px solid var(--borda);
+    border-radius: var(--raio);
+    font-size: 13px;
+    background-color: var(--fundo);
+}
+
+.topo-card a {
+    color: var(--verde);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+
+/* ---------- 7. Relógio e botão de registrar ---------- */
+.relogio {
+    text-align: center;
+}
+
+/* Ícone de relógio verde acima da hora */
+.relogio::before {
+    content: "";
+    display: block;
+    width: 34px;
+    height: 34px;
+    margin: 0 auto 8px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f7b3e' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M11 6.5v5.5l3.5 3.5'/%3E%3C/svg%3E")
+        no-repeat center / contain;
+}
+
+#hora {
+    font-size: 34px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;  /* números com a mesma largura: a hora não "pula" */
+}
+
+#data {
+    margin-bottom: 20px;
+    color: var(--texto-suave);
+}
+
+/* Botão verde com o ícone de digital (SVG) antes do texto */
+.relogio button {
+    width: 100%;
+    height: 52px;
+    border: none;
+    border-radius: var(--raio);
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--branco);
+    background: var(--verde) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round'%3E%3Cpath d='M7 18c1-2 1.5-4 1.5-6a3.5 3.5 0 0 1 7 0c0 3-.5 5-1.5 7M12 12c0 3-.6 5.5-2 8M5 15c.5-1 .5-2 .5-3a6.5 6.5 0 0 1 13 0c0 2-.2 4-.8 6M7 5.5A8 8 0 0 1 19 8'/%3E%3C/svg%3E")
+        no-repeat calc(50% - 75px) center / 24px;
+    cursor: pointer;
+}
+
+.relogio button:hover {
+    background-color: var(--verde-escuro);
+}
+
+/* Enquanto o registro está sendo enviado o botão fica desabilitado */
+.relogio button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+/* Aviso verde claro com o ícone de "check" */
+.aviso {
+    margin-top: 14px;
+    padding: 12px 12px 12px 44px;
+    border-radius: var(--raio);
+    text-align: left;
+    font-size: 12.5px;
+    color: #4b5563;
+    background: var(--verde-claro) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f7b3e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M8 12l3 3 5-6'/%3E%3C/svg%3E")
+        no-repeat 14px center / 20px;
+}
+
+
+/* ---------- 8. Marcações de hoje ---------- */
+.marcacoes {
+    list-style: none;              /* tira as bolinhas da lista */
+}
+
+/* Cada marcação: ícone + tipo à esquerda e horário à direita */
+.marcacoes li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    font-weight: 600;
+    border-bottom: 1px solid var(--borda);
+}
+
+/* margin-left: auto empurra o horário para a direita */
+.marcacoes time {
+    margin-left: auto;
+    font-weight: 400;
+    font-size: 15px;
+}
+
+/* Quadradinho do ícone (cor muda conforme o tipo) */
+.marcacoes li::before {
+    content: "";
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    background: var(--fundo) var(--icone) no-repeat center / 18px;
+}
+
+.entrada {
+    --icone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f7b3e' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E");
+}
+
+.saida {
+    --icone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23dc3545' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E");
+}
+
+.entrada::before {
+    background-color: var(--verde-claro);
+}
+
+.saida::before {
+    background-color: var(--vermelho-claro);
+}
+
+
+/* ---------- 9. Tabela de últimos registros ---------- */
+table {
+    width: 100%;
+    border-collapse: collapse;     /* junta as bordas das células */
+    white-space: nowrap;           /* textos das células não quebram linha */
+}
+
+th {
+    padding: 10px;
+    text-align: left;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--texto-suave);
+    background-color: var(--fundo);
+}
+
+td {
+    padding: 10px;
+    font-size: 13px;
+    border-bottom: 1px solid var(--borda);
+}
+
+/* Mensagem da tabela vazia, centralizada */
+.vazio {
+    padding: 24px;
+    text-align: center;
+    color: var(--texto-suave);
+}
+
+/* Etiquetas arredondadas que o PHP vai usar nos registros:
+   verde para Entrada (class="tag") e vermelha para Saída (class="tag saida") */
+.tag {
+    display: inline-block;
+    min-width: 70px;
+    padding: 3px 10px;
+    border-radius: 999px;          /* formato de pílula */
+    text-align: center;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--verde);
+    background-color: var(--verde-claro);
+}
+
+.tag.saida {
+    color: var(--vermelho);
+    background-color: var(--vermelho-claro);
+}
+
+
+/* ---------- 10. Espelho de ponto ---------- */
+/* Filtro de mês: rótulo, campo e botão lado a lado */
+.filtro {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.filtro label {
+    font-size: 13px;
+    color: var(--texto-suave);
+}
+
+.filtro input {
+    height: 36px;
+    padding: 0 10px;
+    border: 1px solid var(--borda);
+    border-radius: var(--raio);
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--texto);
+}
+
+.filtro button {
+    height: 36px;
+    padding: 0 16px;
+    border: none;
+    border-radius: var(--raio);
+    font-family: inherit;
+    font-weight: 600;
+    color: var(--branco);
+    background-color: var(--verde);
+    cursor: pointer;
+}
+
+.filtro button:hover {
+    background-color: var(--verde-escuro);
+}
+
+/* Linha do total do mês, em negrito e sem borda embaixo */
+tfoot td {
+    font-weight: 600;
+    border-bottom: none;
+}
+
+
+/* ---------- 11. Banco de horas ---------- */
+/* Três cards de resumo lado a lado (horas a mais, a menos e saldo geral) */
+.resumo {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+/* Card de resumo: título pequeno, valor grande e explicação embaixo */
+.indicador p {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--texto-suave);
+}
+
+.indicador strong {
+    display: block;
+    margin: 6px 0 4px;
+    font-size: 28px;
+    font-variant-numeric: tabular-nums;  /* números com a mesma largura */
+}
+
+.indicador span {
+    font-size: 12.5px;
+    color: var(--texto-suave);
+}
+
+/* Faixa colorida à esquerda: verde para horas a mais, vermelha para horas a menos */
+.indicador.positivo {
+    border-left: 4px solid var(--verde);
+}
+
+.indicador.positivo strong {
+    color: var(--verde);
+}
+
+.indicador.negativo {
+    border-left: 4px solid var(--vermelho);
+}
+
+.indicador.negativo strong {
+    color: var(--vermelho);
+}
+
+/* Explicação da regra do cálculo, abaixo do título da tabela */
+.nota {
+    margin: -4px 0 14px;
+    font-size: 12.5px;
+    color: var(--texto-suave);
+}
+
+/* Campo de busca do filtro do banco de horas */
+.filtro input[type="search"] {
+    width: 180px;
+}
+
+/* Saldo na tabela: verde quando sobra hora, vermelho quando falta */
+.saldo {
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.saldo.positivo {
+    color: var(--verde);
+}
+
+.saldo.negativo {
+    color: var(--vermelho);
+}
+
+
+/* ---------- 12. Responsividade ---------- */
+/* Telas médias: os cards ficam um embaixo do outro */
+@media (max-width: 1000px) {
+    .conteudo {
+        grid-template-columns: 1fr;
+    }
+
+    .registros {
+        grid-column: auto;
+    }
+}
+
+/* Celular: o menu vai para o topo, com os links lado a lado */
+@media (max-width: 800px) {
+    body {
+        display: block;
+    }
+
+    .menu {
+        position: static;
+        height: auto;
+        flex-direction: row;
+        flex-wrap: wrap;
+        border-right: none;
+        border-bottom: 1px solid var(--borda);
+    }
+
+    /* Links com rolagem para o lado */
+    nav {
+        flex-direction: row;
+        overflow-x: auto;
+        order: 1;                  /* os links vão para a linha de baixo */
+        width: 100%;
+    }
+
+    nav a {
+        white-space: nowrap;
+    }
+
+    /* O "Sair" fica na mesma linha do logo, à direita */
+    .sair {
+        align-self: flex-start;
+        margin: 0 0 0 auto;
+    }
+
+    main {
+        padding: 20px 16px;
+    }
+
+    header,
+    .topo-card,
+    .filtro {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    /* Cards do resumo do banco de horas um embaixo do outro */
+    .resumo {
+        grid-template-columns: 1fr;
+    }
+}

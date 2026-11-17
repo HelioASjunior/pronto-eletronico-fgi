@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco de Horas - PontoEletrônico</title>
+    <!-- Usa o mesmo CSS do painel (menu, cabeçalho, cards e tabela iguais) -->
+    <link rel="stylesheet" href="../css/painel.css">
+</head>
+<body>
+    <!-- Menu lateral (igual ao do painel.html). Esta página é só do administrador -->
+    <aside class="menu">
+        <p class="logo">Ponto<span>Eletrônico</span></p>
+        <nav>
+            <a href="funcionarios.html" class="i-funcionarios so-admin">Funcionários</a>
+            <a href="painel.html" class="i-ponto">Registrar Ponto</a>
+            <a href="espelho.html" class="i-espelho">Espelho de Ponto</a>
+            <a href="banco_horas.html" class="i-banco so-admin ativo">Banco de Horas</a>
+        </nav>
+        <!-- Sair apaga o login e volta para a tela de login -->
+        <a href="../PHP/logout.php" class="sair i-sair">Sair</a>
+    </aside>
+
+    <main>
+        <!-- Cabeçalho: título à esquerda e usuário logado à direita -->
+        <header>
+            <div>
+                <h1>Banco de Horas</h1>
+                <p>Acompanhe as horas a mais e a menos de cada funcionário no mês.</p>
+            </div>
+            <!-- Usuário logado (preenchido pelo js/comum.js) -->
+            <p class="usuario" data-inicial=""><strong></strong> <span></span></p>
+        </header>
+
+        <!-- Resumo do mês: três cards lado a lado.
+             Os valores começam zerados e serão preenchidos com os dados do banco -->
+        <div class="resumo">
+            <section class="card indicador positivo">
+                <p>Horas a mais</p>
+                <strong id="total-positivo">+00:00</strong>
+                <span>Soma dos saldos positivos</span>
+            </section>
+            <section class="card indicador negativo">
+                <p>Horas a menos</p>
+                <strong id="total-negativo">-00:00</strong>
+                <span>Soma dos saldos negativos</span>
+            </section>
+            <section class="card indicador">
+                <p>Saldo geral</p>
+                <strong id="saldo-geral">00:00</strong>
+                <span>Horas a mais menos horas a menos</span>
+            </section>
+        </div>
+
+        <!-- Saldo de cada funcionário no mês escolhido -->
+        <section class="card">
+            <div class="topo-card">
+                <h2>Saldo por funcionário</h2>
+                <!-- Filtro com o método GET: a página abre de novo com os valores na URL
+                     (banco_horas.html?mes=2026-11&busca=maria) -->
+                <form method="get" action="banco_horas.html" class="filtro">
+                    <input type="search" id="busca" name="busca" placeholder="Buscar funcionário">
+                    <label for="mes">Mês</label>
+                    <input type="month" id="mes" name="mes">
+                    <button type="submit">Filtrar</button>
+                </form>
+            </div>
+
+            <!-- Regra do cálculo. A data é preenchida pelo js/banco_horas.js -->
+            <p class="nota">
+                Jornada prevista: 8 horas por dia, de segunda a sexta.
+                Contados os dias encerrados até <strong id="contado-ate">ontem</strong>;
+                o dia de hoje entra no saldo a partir de amanhã.
+            </p>
+
+            <!-- Uma linha por funcionário.
+                 Saldo = horas trabalhadas - horas previstas.
+                 Na coluna Saldo, a classe "saldo positivo" deixa verde e "saldo negativo" deixa vermelho -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Funcionário</th>
+                        <th>Departamento</th>
+                        <th>Dias trabalhados</th>
+                        <th>Horas previstas</th>
+                        <th>Horas trabalhadas</th>
+                        <th>Saldo do mês</th>
+                    </tr>
+                </thead>
+                <tbody id="lista-saldos">
+                    <!-- colspan="6" faz a célula ocupar as 6 colunas -->
+                    <tr>
+                        <td colspan="6" class="vazio">Nenhum dado de banco de horas ainda.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <!-- comum.js: confere o login e mostra o menu do administrador.
+         banco_horas.js: busca os saldos no PHP e preenche a página -->
+    <script src="../js/comum.js"></script>
+    <script src="../js/banco_horas.js"></script>
+</body>
+</html>

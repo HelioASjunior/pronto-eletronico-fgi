@@ -1,0 +1,582 @@
+/* =========================================================
+   Estilo da tela de Funcionários - PontoEletrônico
+   Arquivo: css/funcionarios.css
+   Ligado ao paginas/funcionarios.html pela tag <link>
+   ========================================================= */
+
+
+/* ---------- 1. Variáveis de cores ---------- */
+/* Mesmas cores da tela de login, para manter o padrão do sistema */
+:root {
+    --verde: #0f7b3e;         /* verde principal */
+    --verde-escuro: #0b6431;  /* verde ao passar o mouse */
+    --verde-claro: #e8f5ec;   /* fundos verdes suaves (menu ativo, etiquetas) */
+    --azul: #2f5fd0;          /* etiqueta de Administrador */
+    --azul-claro: #e7efff;
+    --vermelho: #dc3545;      /* asterisco obrigatório e ícone de excluir */
+    --vermelho-claro: #fdecee; /* fundo da mensagem de erro */
+    --texto: #1b1f23;         /* textos principais */
+    --texto-suave: #6b7280;   /* textos secundários */
+    --borda: #e3e7e5;         /* bordas dos campos e cards */
+    --branco: #ffffff;
+    --fundo: #f6f8f7;         /* fundo da página */
+    --raio: 8px;              /* arredondamento dos campos e botões */
+}
+
+
+/* ---------- 2. Reset e base ---------- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* A página é dividida em duas colunas: menu (220px) e conteúdo (resto) */
+body {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    min-height: 100vh;
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 14px;
+    color: var(--texto);
+    background-color: var(--fundo);
+}
+
+
+/* ---------- 3. Menu lateral ---------- */
+/* Flex em coluna para o "Sair" poder ir para o final do menu */
+.menu {
+    position: sticky;              /* o menu fica parado ao rolar a página */
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 22px 14px;
+    background-color: var(--branco);
+    border-right: 1px solid var(--borda);
+}
+
+/* Logo: ícone de relógio (SVG de fundo) + "Ponto" escuro + "Eletrônico" verde */
+.logo {
+    padding-left: 38px;
+    margin: 0 0 28px 6px;
+    line-height: 28px;
+    font-size: 17px;
+    font-weight: 700;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f7b3e' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10.5'/%3E%3Cpath d='M11 6.5v5.5l3.5 3.5'/%3E%3C/svg%3E")
+        no-repeat left center / 28px 28px;
+}
+
+.logo span {
+    color: var(--verde);
+}
+
+/* Links do menu, um embaixo do outro */
+nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+nav a,
+.sair {
+    display: flex;
+    align-items: center;
+    gap: 12px;                     /* espaço entre o ícone e o texto */
+    padding: 10px 12px;
+    border-radius: var(--raio);
+    color: #374151;
+    text-decoration: none;
+    font-size: 14.5px;
+}
+
+nav a:hover,
+.sair:hover {
+    background-color: var(--fundo);
+}
+
+/* Links só do administrador (class="so-admin"): ficam escondidos e
+   aparecem quando o js/comum.js coloca a classe "admin" no <body> */
+body:not(.admin) .so-admin {
+    display: none;
+}
+
+/* Link da página atual fica verde */
+nav a.ativo {
+    color: var(--verde);
+    font-weight: 600;
+    background-color: var(--verde-claro);
+}
+
+/* Ícone de cada link. O "mask" recorta o desenho do SVG e pinta
+   com a cor do texto (currentColor), por isso o ícone do link
+   ativo também fica verde. Cada classe i-... define seu desenho
+   na variável --icone. */
+/* margin-top: auto empurra o "Sair" para o final do menu */
+.sair {
+    margin-top: auto;
+}
+
+nav a::before,
+.sair::before {
+    content: "";
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;                /* o ícone não encolhe */
+    background-color: currentColor;
+    -webkit-mask: var(--icone) no-repeat center / contain;
+    mask: var(--icone) no-repeat center / contain;
+}
+
+/* Desenhos dos ícones do menu */
+.i-funcionarios {
+    --icone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='9' cy='8' r='3.5'/%3E%3Cpath d='M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6M16 4.5a3.5 3.5 0 0 1 0 7M18 14c2.2.6 3.5 2.7 3.5 6'/%3E%3C/svg%3E");
+}
+
+.i-ponto {
+    --icone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7v5l3 3'/%3E%3C/svg%3E");
+}
+
+.i-espelho {
+    --icone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 3H6v18h12V7zM14 3v4h4M9 12h6M9 16h6'/%3E%3C/svg%3E");
+}
+
+.i-sair {
+    --icone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10 4H5v16h5M14 8l4 4-4 4M18 12H9'/%3E%3C/svg%3E");
+}
+
+.i-banco {
+    --icone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 3h12M6 21h12M7 3v3l5 6 5-6V3M7 21v-3l5-6 5 6v3'/%3E%3C/svg%3E");
+}
+
+
+
+/* ---------- 4. Cabeçalho da página ---------- */
+main {
+    padding: 24px 28px;
+    min-width: 0;                  /* evita que a tabela "estoure" a coluna */
+}
+
+/* Título à esquerda e botão "Novo Funcionário" à direita */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 4px;
+}
+
+header p {
+    color: var(--texto-suave);
+}
+
+/* Botão verde "Novo Funcionário" (leva até o formulário) */
+.btn-novo {
+    padding: 12px 20px;
+    border-radius: var(--raio);
+    color: var(--branco);
+    background-color: var(--verde);
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;           /* texto não quebra linha */
+}
+
+/* Sinal de + antes do texto */
+.btn-novo::before {
+    content: "+";
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+.btn-novo:hover {
+    background-color: var(--verde-escuro);
+}
+
+
+/* Mensagens do PHP: verde quando deu certo, vermelha quando deu erro */
+.mensagem {
+    margin-bottom: 18px;
+    padding: 12px 14px;
+    border-radius: var(--raio);
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--verde);
+    background-color: var(--verde-claro);
+}
+
+.mensagem.erro {
+    color: #b42318;
+    background-color: var(--vermelho-claro);
+}
+
+
+/* ---------- 5. Cards (cadastro e lista lado a lado) ---------- */
+/* Grid de 2 colunas: formulário à esquerda e lista à direita */
+.conteudo {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: 20px;
+    align-items: start;            /* cada card com a sua altura */
+}
+
+.card {
+    padding: 20px 22px;
+    border: 1px solid var(--borda);
+    border-radius: 12px;
+    background-color: var(--branco);
+    overflow-x: auto;              /* a tabela rola para o lado se faltar espaço */
+}
+
+h2 {
+    font-size: 17px;
+    margin-bottom: 18px;
+}
+
+
+/* ---------- 6. Formulário de cadastro ---------- */
+/* Grid de 6 colunas: campos de texto ocupam 3 (metade)
+   e os selects ocupam 2 (um terço), igual ao modelo */
+form {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 14px 16px;
+}
+
+.campo {
+    grid-column: span 3;
+}
+
+/* :has(select) = "campo que tem um select dentro" */
+.campo:has(select) {
+    grid-column: span 2;
+}
+
+/* Linhas do formulário: Nome (4) + Sexo (2) e CPF, Usuário e Senha (2 cada) */
+.campo-largo {
+    grid-column: span 4;
+}
+
+.campo-curto {
+    grid-column: span 2;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13.5px;
+    font-weight: 600;
+}
+
+/* Asterisco vermelho automático nos campos obrigatórios (required) */
+.campo:has([required]) label::after {
+    content: " *";
+    color: var(--vermelho);
+}
+
+input,
+select {
+    width: 100%;
+    height: 40px;
+    padding: 0 12px;
+    font-family: inherit;
+    font-size: 13.5px;
+    color: var(--texto);
+    border: 1px solid var(--borda);
+    border-radius: var(--raio);
+    background-color: var(--branco);
+}
+
+input::placeholder {
+    color: #9aa1a9;
+}
+
+/* Select sem a seta padrão, com uma seta própria (SVG) à direita */
+select {
+    appearance: none;
+    padding-right: 30px;
+    text-overflow: ellipsis;       /* texto longo termina com "..." */
+    cursor: pointer;
+    background: var(--branco) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")
+        no-repeat right 12px center / 16px;
+}
+
+/* Borda verde no campo selecionado */
+input:focus,
+select:focus {
+    outline: none;
+    border-color: var(--verde);
+    box-shadow: 0 0 0 3px rgba(15, 123, 62, 0.15);
+}
+
+/* Olho da senha: o botão fica dentro do campo, à direita */
+.campo-senha {
+    position: relative;
+}
+
+.campo-senha input {
+    padding-right: 44px;
+}
+
+.ver-senha {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    width: 28px;
+    height: 28px;
+    border: none;
+    cursor: pointer;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/svg%3E")
+        no-repeat center / 20px;
+}
+
+/* Classe adicionada pelo JavaScript: olho riscado */
+.ver-senha.visivel {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f7b3e' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3Cpath d='M3 3l18 18'/%3E%3C/svg%3E");
+}
+
+/* Botões Limpar e Salvar alinhados à direita */
+.botoes {
+    grid-column: span 6;           /* ocupa a linha inteira */
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+.botoes button {
+    height: 40px;
+    padding: 0 20px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: var(--raio);
+    cursor: pointer;
+}
+
+.botoes button[type="reset"] {
+    color: var(--texto);
+    background-color: var(--branco);
+    border: 1px solid var(--borda);
+}
+
+.botoes button[type="submit"] {
+    color: var(--branco);
+    background-color: var(--verde);
+    border: none;
+}
+
+.botoes button[type="submit"]:hover {
+    background-color: var(--verde-escuro);
+}
+
+
+/* ---------- 7. Lista de funcionários ---------- */
+/* Título, busca e filtro na mesma linha */
+.topo-lista {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+/* margin-right: auto empurra a busca e o filtro para a direita */
+.topo-lista h2 {
+    margin: 0 auto 0 0;
+}
+
+/* Campo de busca com ícone de lupa */
+.topo-lista input {
+    width: 210px;
+    padding-left: 36px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M20 20l-4-4'/%3E%3C/svg%3E")
+        no-repeat 12px center / 16px;
+}
+
+/* Ícones dos botões (filtro, editar e excluir).
+   Mesma técnica do menu: mask + cor do texto. */
+.btn-filtro::before,
+.editar::before,
+.excluir::before {
+    content: "";
+    display: block;
+    width: 17px;
+    height: 17px;
+    margin: auto;
+    background-color: currentColor;
+    -webkit-mask: var(--icone) no-repeat center / contain;
+    mask: var(--icone) no-repeat center / contain;
+}
+
+/* Botão de filtro */
+.btn-filtro {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    color: var(--texto-suave);
+    background-color: var(--branco);
+    border: 1px solid var(--borda);
+    border-radius: var(--raio);
+    cursor: pointer;
+    --icone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round'%3E%3Cpath d='M3 5h18l-7 8v6l-4 2v-8z'/%3E%3C/svg%3E");
+}
+
+/* Tabela */
+table {
+    width: 100%;
+    border-collapse: collapse;     /* junta as bordas das células */
+    white-space: nowrap;           /* textos das células não quebram linha */
+}
+
+th {
+    padding: 10px;
+    text-align: left;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--texto-suave);
+    background-color: var(--fundo);
+}
+
+td {
+    padding: 10px;
+    font-size: 13px;
+    border-bottom: 1px solid var(--borda);
+}
+
+/* Nome do funcionário em negrito (primeira coluna) */
+td:first-child {
+    font-weight: 600;
+}
+
+/* Mensagem da tabela vazia, centralizada e sem negrito */
+td.vazio {
+    padding: 24px;
+    text-align: center;
+    font-weight: 400;
+    color: var(--texto-suave);
+}
+
+/* Linha fica destacada ao passar o mouse */
+tbody tr:hover {
+    background-color: #fafcfb;
+}
+
+/* Linha do funcionário que está sendo editado (classe colocada pelo js/funcionarios.js) */
+tbody tr.editando {
+    background-color: var(--verde-claro);
+}
+
+/* Etiqueta arredondada verde (Funcionário) */
+.tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;          /* formato de pílula */
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--verde);
+    background-color: var(--verde-claro);
+}
+
+/* Etiqueta azul para Administrador */
+.tag.admin {
+    color: var(--azul);
+    background-color: var(--azul-claro);
+}
+
+/* Botões de editar e excluir */
+.editar,
+.excluir {
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 6px;
+    background: none;
+    cursor: pointer;
+}
+
+.editar:hover,
+.excluir:hover {
+    background-color: var(--fundo);
+}
+
+/* Lápis cinza */
+.editar {
+    color: #4b5563;
+    --icone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 20h4L19 9l-4-4L4 16zM13 7l4 4'/%3E%3C/svg%3E");
+}
+
+/* Lixeira vermelha */
+.excluir {
+    color: var(--vermelho);
+    --icone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3'/%3E%3C/svg%3E");
+}
+
+
+/* ---------- 8. Responsividade ---------- */
+/* Telas médias: a lista vai para baixo do formulário */
+@media (max-width: 1200px) {
+    .conteudo {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Celular: o menu vai para o topo e os campos ocupam a linha toda */
+@media (max-width: 800px) {
+    body {
+        display: block;
+    }
+
+    .menu {
+        position: static;
+        height: auto;
+        flex-direction: row;
+        flex-wrap: wrap;
+        border-right: none;
+        border-bottom: 1px solid var(--borda);
+    }
+
+    /* Links do menu lado a lado, com rolagem para o lado */
+    nav {
+        flex-direction: row;
+        overflow-x: auto;
+        order: 1;                  /* os links vão para a linha de baixo */
+        width: 100%;
+    }
+
+    /* O "Sair" fica na mesma linha do logo, à direita */
+    .sair {
+        align-self: flex-start;
+        margin: 0 0 0 auto;
+    }
+
+    nav a {
+        white-space: nowrap;
+    }
+
+    main {
+        padding: 20px 16px;
+    }
+
+    header {
+        flex-wrap: wrap;
+    }
+
+    .campo,
+    .campo:has(select) {
+        grid-column: span 6;
+    }
+
+    .topo-lista {
+        flex-wrap: wrap;
+    }
+
+    .topo-lista input {
+        width: auto;
+        flex: 1;
+    }
+}

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espelho de Ponto - PontoEletrônico</title>
+    <!-- Usa o mesmo CSS do painel (menu, cabeçalho, cards e tabela iguais) -->
+    <link rel="stylesheet" href="../css/painel.css">
+</head>
+<body>
+    <!-- Menu lateral (igual ao do painel.html) -->
+    <aside class="menu">
+        <p class="logo">Ponto<span>Eletrônico</span></p>
+        <nav>
+            <a href="funcionarios.html" class="i-funcionarios so-admin">Funcionários</a>
+            <a href="painel.html" class="i-ponto">Registrar Ponto</a>
+            <a href="espelho.html" class="i-espelho ativo">Espelho de Ponto</a>
+            <a href="banco_horas.html" class="i-banco so-admin">Banco de Horas</a>
+        </nav>
+        <!-- Sair apaga o login e volta para a tela de login -->
+        <a href="../PHP/logout.php" class="sair i-sair">Sair</a>
+    </aside>
+
+    <main>
+        <!-- Cabeçalho: título à esquerda e usuário logado à direita -->
+        <header>
+            <div>
+                <h1>Espelho de Ponto</h1>
+                <p>Histórico de todas as suas marcações de ponto.</p>
+            </div>
+            <!-- Usuário logado (preenchido pelo js/comum.js) -->
+            <p class="usuario" data-inicial=""><strong></strong> <span></span></p>
+        </header>
+
+        <section class="card">
+            <div class="topo-card">
+                <h2>Histórico</h2>
+                <!-- Filtro por mês com o método GET: ao clicar em Filtrar,
+                     a página abre de novo com o mês na URL (espelho.html?mes=2026-11)
+                     e o js/espelho.js pede ao PHP os pontos daquele mês -->
+                <form method="get" action="espelho.html" class="filtro">
+                    <label for="mes">Mês</label>
+                    <input type="month" id="mes" name="mes">
+                    <button type="submit">Filtrar</button>
+                </form>
+            </div>
+
+            <!-- Uma linha por dia, com as marcações daquele dia.
+                 O js/espelho.js troca a linha de aviso pelos dias do mês -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Entrada</th>
+                        <th>Saída</th>
+                        <th>Entrada</th>
+                        <th>Saída</th>
+                        <th>Total</th>
+                        <th>Observação</th>
+                    </tr>
+                </thead>
+                <tbody id="dias">
+                    <!-- colspan="7" faz a célula ocupar as 7 colunas -->
+                    <tr>
+                        <td colspan="7" class="vazio">Carregando...</td>
+                    </tr>
+                </tbody>
+                <!-- Soma das horas do mês (calculada pelo PHP) -->
+                <tfoot>
+                    <tr>
+                        <td colspan="5">Total do mês</td>
+                        <td colspan="2" id="total-mes">--:--</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </section>
+    </main>
+
+    <!-- comum.js primeiro: confere o login e tem as funções usadas pelo espelho.js -->
+    <script src="../js/comum.js"></script>
+    <script src="../js/espelho.js"></script>
+</body>
+</html>
