@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funcionários - PontoEletrônico</title>
+    <!-- CSS exclusivo desta página -->
+    <link rel="stylesheet" href="../css/funcionarios.css">
+</head>
+<body>
+    <!-- Menu lateral (igual ao do painel.html). Esta página é só do administrador -->
+    <aside class="menu">
+        <p class="logo">Ponto<span>Eletrônico</span></p>
+        <nav>
+            <a href="funcionarios.html" class="i-funcionarios so-admin ativo">Funcionários</a>
+            <a href="painel.html" class="i-ponto">Registrar Ponto</a>
+            <a href="espelho.html" class="i-espelho">Espelho de Ponto</a>
+            <a href="banco_horas.html" class="i-banco so-admin">Banco de Horas</a>
+        </nav>
+        <!-- Sair apaga o login e volta para a tela de login -->
+        <a href="../PHP/logout.php" class="sair i-sair">Sair</a>
+    </aside>
+
+    <main>
+        <!-- Cabeçalho da página -->
+        <header>
+            <div>
+                <h1>Funcionários</h1>
+                <p>Cadastre, edite e gerencie os funcionários que utilizam o ponto eletrônico.</p>
+            </div>
+            <a href="#nome" class="btn-novo">Novo Funcionário</a>
+        </header>
+
+        <!-- Cadastro (esquerda) e lista (direita) -->
+        <div class="conteudo">
+
+            <!-- Formulário de cadastro: o js/funcionarios.js envia para o PHP com o método POST -->
+            <section class="card">
+                <!-- O js/funcionarios.js troca para "Editar Funcionário" ao clicar no lápis -->
+                <h2 id="titulo-formulario">Cadastrar Funcionário</h2>
+
+                <!-- Aviso de sucesso ou erro do cadastro. Começa escondido -->
+                <p class="mensagem" id="mensagem" hidden></p>
+
+                <form id="form-cadastro" method="post" action="../PHP/funcionarios_cadastrar.php">
+                    <!-- Campo escondido: guarda o id de quem está sendo editado.
+                         Vazio = cadastro novo -->
+                    <input type="hidden" id="id_funcionario" name="id_funcionario">
+                    <div class="campo campo-largo">
+                        <label for="nome">Nome completo</label>
+                        <input type="text" id="nome" name="nome" placeholder="Digite o nome completo" maxlength="100" required>
+                    </div>
+                    <!-- Sexo: o value de cada opção é o que será gravado no banco -->
+                    <div class="campo">
+                        <label for="sexo">Sexo</label>
+                        <select id="sexo" name="sexo" required>
+                            <option value="">Selecione</option>
+                            <option value="feminino">Feminino</option>
+                            <option value="masculino">Masculino</option>
+                            <option value="nao_informado">Prefiro não informar</option>
+                        </select>
+                    </div>
+                    <div class="campo campo-curto">
+                        <label for="cpf">CPF</label>
+                        <!-- Pode digitar com ou sem pontuação: o PHP grava só os números -->
+                        <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" maxlength="14" inputmode="numeric" required>
+                    </div>
+                    <div class="campo campo-curto">
+                        <label for="usuario">Usuário (login)</label>
+                        <input type="text" id="usuario" name="usuario" placeholder="Digite o usuário" maxlength="50" autocomplete="off" required>
+                    </div>
+                    <div class="campo campo-curto">
+                        <label for="senha">Senha (inicial)</label>
+                        <!-- Campo de senha com o botão do olho (usa o js/script.js) -->
+                        <div class="campo-senha">
+                            <input type="password" id="senha" name="senha" placeholder="Mínimo 6 caracteres" minlength="6" autocomplete="new-password" required>
+                            <button type="button" class="ver-senha" aria-label="Mostrar senha"></button>
+                        </div>
+                    </div>
+                    <div class="campo">
+                        <label for="cargo">Cargo</label>
+                        <select id="cargo" name="cargo">
+                            <option value="">Selecione o cargo</option>
+                            <option>Analista</option>
+                            <option>Desenvolvedor</option>
+                            <option>Suporte</option>
+                            <option>RH</option>
+                        </select>
+                    </div>
+                    <div class="campo">
+                        <label for="departamento">Departamento</label>
+                        <select id="departamento" name="departamento">
+                            <option value="">Selecione o departamento</option>
+                            <option>Financeiro</option>
+                            <option>TI</option>
+                            <option>Recursos Humanos</option>
+                        </select>
+                    </div>
+                    <div class="campo">
+                        <label for="acesso">Tipo de acesso</label>
+                        <!-- O value de cada opção é o que será gravado no banco (coluna tipo_acesso) -->
+                        <select id="acesso" name="acesso" required>
+                            <option value="funcionario">Funcionário</option>
+                            <option value="administrador">Administrador</option>
+                        </select>
+                    </div>
+                    <!-- Botões do formulário -->
+                    <!-- Na edição viram "Cancelar" e "Salvar alterações" (js/funcionarios.js) -->
+                    <div class="botoes">
+                        <button type="reset" id="botao-limpar">Limpar</button>
+                        <button type="submit" id="botao-salvar">Salvar</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Lista de funcionários: o js/funcionarios.js busca no PHP e preenche -->
+            <section class="card">
+                <!-- Busca com o método GET: a página abre de novo com o texto na URL
+                     (funcionarios.html?busca=maria) e o js/funcionarios.js pede ao PHP -->
+                <form method="get" action="funcionarios.html" class="topo-lista">
+                    <h2>Lista de Funcionários</h2>
+                    <input type="search" id="busca" name="busca" placeholder="Buscar por nome, CPF, cargo...">
+                    <button type="submit" class="btn-filtro" aria-label="Buscar"></button>
+                </form>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>CPF</th>
+                            <th>Cargo</th>
+                            <th>Departamento</th>
+                            <th>Acesso</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lista-funcionarios">
+                        <!-- colspan="6" faz a célula ocupar as 6 colunas -->
+                        <tr>
+                            <td colspan="6" class="vazio">Carregando...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </main>
+
+    <!-- script.js: olho da senha. comum.js: confere o login e funções de apoio.
+         funcionarios.js: cadastro e lista -->
+    <script src="../js/script.js"></script>
+    <script src="../js/comum.js"></script>
+    <script src="../js/funcionarios.js"></script>
+</body>
+</html>

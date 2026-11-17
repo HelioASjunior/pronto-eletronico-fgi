@@ -11,16 +11,28 @@
 <body>
     <!-- Título da página. O logo "PontoEletrônico" e o subtítulo são criados pelo CSS -->
     <h1>Bem-vindo!</h1>
-    <!-- Formulário de login, será usado PHP para processar os dados -->
-    <form>
+    <!-- Formulário de login: os dados vão para o PHP/login.php, que confere no banco.
+         method="post" para o usuário e a senha não aparecerem na barra de endereço -->
+    <form method="post" action="PHP/login.php">
+        <!-- Aviso de erro (ex.: senha errada). Começa escondido (hidden)
+             e o js/script.js mostra quando a URL volta com ?erro=... -->
+        <p class="mensagem" id="mensagem" hidden></p>
+
         <!-- Campo de usuário (o ícone de pessoa vem do CSS) -->
         <div>
             <label for="usuario">Usuário:</label>
+            <!-- NOVO: autocomplete="username" avisa o navegador que este campo é o usuário
+                 e list="usuarios-salvos" liga o campo à lista de sugestões abaixo -->
             <input type="text"
                 id="usuario"
                 name="usuario"
                 placeholder="Digite seu usuário"
+                autocomplete="username"
+                list="usuarios-salvos"
                 required>
+            <!-- NOVO: lista de sugestões do campo usuário. Começa vazia e é
+                 preenchida pelo js/script.js com os usuários salvos no "Lembrar de mim" -->
+            <datalist id="usuarios-salvos"></datalist>
         </div>
 
         <br>
@@ -34,6 +46,7 @@
                     id="senha"
                     name="senha"
                     placeholder="Digite sua senha"
+                    autocomplete="current-password"
                     required>
                 <!-- NOVO: botão do olho para mostrar/ocultar a senha (funciona com o js/script.js) -->
                 <!-- type="button" para não enviar o formulário ao clicar -->
@@ -44,7 +57,7 @@
         <!-- NOVO: linha com "Lembrar de mim" (checkbox) e o link "Esqueceu a senha?" -->
         <div class="opcoes">
             <label class="lembrar">
-                <input type="checkbox" name="lembrar">
+                <input type="checkbox" id="lembrar" name="lembrar">
                 Lembrar de mim
             </label>
             <a href="#" class="esqueceu">Esqueceu a senha?</a>
@@ -89,7 +102,7 @@
         </ul>
     </aside>
 
-    <!-- NOVO: liga o arquivo JavaScript (olho da senha). Fica no final para carregar depois do HTML -->
+    <!-- NOVO: liga o arquivo JavaScript (olho da senha e sugestões de usuário). Fica no final para carregar depois do HTML -->
     <script src="js/script.js"></script>
 </body>
 </html>

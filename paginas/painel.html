@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Ponto - PontoEletrônico</title>
+    <!-- CSS das telas do funcionário -->
+    <link rel="stylesheet" href="../css/painel.css">
+</head>
+<body>
+    <!-- Menu lateral (os ícones vêm do CSS, pela classe de cada link).
+         Links com a classe "so-admin" ficam escondidos e o js/comum.js
+         mostra só quando quem entrou é administrador -->
+    <aside class="menu">
+        <p class="logo">Ponto<span>Eletrônico</span></p>
+        <nav>
+            <a href="funcionarios.html" class="i-funcionarios so-admin">Funcionários</a>
+            <a href="painel.html" class="i-ponto ativo">Registrar Ponto</a>
+            <a href="espelho.html" class="i-espelho">Espelho de Ponto</a>
+            <a href="banco_horas.html" class="i-banco so-admin">Banco de Horas</a>
+        </nav>
+        <!-- Sair apaga o login e volta para a tela de login -->
+        <a href="../PHP/logout.php" class="sair i-sair">Sair</a>
+    </aside>
+
+    <main>
+        <!-- Cabeçalho: saudação à esquerda e usuário logado à direita -->
+        <header>
+            <div>
+                <!-- O js/painel.js troca para "Olá, Nome!" -->
+                <h1 id="saudacao">Olá!</h1>
+                <!-- A data é escrita pelo js/painel.js -->
+                <p id="data-extenso"></p>
+            </div>
+            <!-- Usuário logado (preenchido pelo js/comum.js).
+                 data-inicial é a letra mostrada no círculo verde (feito pelo CSS) -->
+            <p class="usuario" data-inicial=""><strong></strong> <span></span></p>
+        </header>
+
+        <!-- Aviso depois de registrar ("Entrada registrada às 08:00."). Começa escondido -->
+        <p class="mensagem" id="mensagem" hidden></p>
+
+        <!-- Relógio (esquerda), marcações de hoje (direita) e últimos registros (embaixo) -->
+        <div class="conteudo">
+
+            <!-- Registro do ponto: o js/painel.js envia para o PHP com o método POST -->
+            <section class="card relogio" id="registrar">
+                <!-- Hora e data são atualizadas a cada segundo pelo js/painel.js -->
+                <p id="hora">--:--:--</p>
+                <p id="data"></p>
+                <form id="form-ponto" method="post" action="../PHP/ponto_registrar.php">
+                    <button type="submit">Registrar Ponto</button>
+                </form>
+                <p class="aviso">
+                    Seu ponto será registrado com a data e a hora atuais.
+                    Próximo registro: <strong id="proximo-tipo">—</strong>.
+                </p>
+            </section>
+
+            <!-- Marcações de hoje: começam vazias (--:--) e o js/painel.js
+                 preenche com o que veio do banco -->
+            <section class="card">
+                <div class="topo-card">
+                    <h2>Hoje</h2>
+                    <span id="data-curta"></span>
+                </div>
+                <ul class="marcacoes" id="marcacoes-hoje">
+                    <li class="entrada">Entrada <time>--:--</time></li>
+                    <li class="saida">Saída <time>--:--</time></li>
+                    <li class="entrada">Entrada <time>--:--</time></li>
+                    <li class="saida">Saída <time>--:--</time></li>
+                </ul>
+            </section>
+
+            <!-- Últimos registros: o js/painel.js troca a linha de aviso
+                 pelos registros que vieram do banco -->
+            <section class="card registros">
+                <div class="topo-card">
+                    <h2>Últimos registros</h2>
+                    <a href="espelho.html">Ver todos</a>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Horário</th>
+                            <th>Tipo</th>
+                            <th>Observação</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ultimos-registros">
+                        <!-- colspan="4" faz a célula ocupar as 4 colunas -->
+                        <tr>
+                            <td colspan="4" class="vazio">Carregando...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </main>
+
+    <!-- comum.js primeiro: confere o login e tem as funções usadas pelo painel.js -->
+    <script src="../js/comum.js"></script>
+    <script src="../js/painel.js"></script>
+</body>
+</html>
