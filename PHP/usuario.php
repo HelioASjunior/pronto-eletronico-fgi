@@ -5,7 +5,7 @@
 // quem está logado. Sem login responde 401 e a página volta para o login.
 
 // 1. Carrega a sessão.
-require __DIR__ . '/sessao.php';
+require_once __DIR__ . '/sessao.php';
 
 // 2. Confere o método e o login.
 exigirMetodo('GET');

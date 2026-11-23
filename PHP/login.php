@@ -6,8 +6,8 @@
 // com ?erro=... na URL e o js/script.js mostra o aviso.
 
 // 1. Carrega a conexão e a sessão.
-require __DIR__ . '/conexao.php';
-require __DIR__ . '/sessao.php';
+require_once __DIR__ . '/conexao.php';
+require_once __DIR__ . '/sessao.php';
 
 // 2. Só aceita o envio do formulário (POST).
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

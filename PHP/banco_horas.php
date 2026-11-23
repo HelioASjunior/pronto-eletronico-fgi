@@ -13,8 +13,8 @@
 // - Saldo = horas trabalhadas - horas previstas.
 
 // 1. Carrega a conexão e a sessão.
-require __DIR__ . '/conexao.php';
-require __DIR__ . '/sessao.php';
+require_once __DIR__ . '/conexao.php';
+require_once __DIR__ . '/sessao.php';
 
 // 2. Só o administrador pode ver, e só com GET.
 exigirMetodo('GET');

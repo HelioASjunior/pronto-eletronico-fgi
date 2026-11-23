@@ -4,8 +4,8 @@
 // Método: GET. Usado pelo paginas/painel.html.
 
 // 1. Carrega a conexão e a sessão.
-require __DIR__ . '/conexao.php';
-require __DIR__ . '/sessao.php';
+require_once __DIR__ . '/conexao.php';
+require_once __DIR__ . '/sessao.php';
 
 // 2. Precisa estar logado, e só com GET.
 exigirMetodo('GET');

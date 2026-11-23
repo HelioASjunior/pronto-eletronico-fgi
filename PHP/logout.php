@@ -3,7 +3,7 @@
 // Arquivo: PHP/logout.php
 
 // 1. Carrega a sessão.
-require __DIR__ . '/sessao.php';
+require_once __DIR__ . '/sessao.php';
 
 // 2. Apaga o login.
 $_SESSION = [];

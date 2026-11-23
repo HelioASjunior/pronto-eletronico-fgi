@@ -5,8 +5,8 @@
 // A busca vai na URL: funcionarios_listar.php?busca=maria
 
 // 1. Carrega a conexão e a sessão.
-require __DIR__ . '/conexao.php';
-require __DIR__ . '/sessao.php';
+require_once __DIR__ . '/conexao.php';
+require_once __DIR__ . '/sessao.php';
 
 // 2. Só o administrador pode ver a lista, e só com GET.
 exigirMetodo('GET');

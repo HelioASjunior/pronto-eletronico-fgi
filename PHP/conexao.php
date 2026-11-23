@@ -1,7 +1,7 @@
 <?php
 // Conexão com o banco de dados - PontoEletrônico
 // Arquivo: PHP/conexao.php
-// Os outros arquivos usam assim: require __DIR__ . '/conexao.php';
+// Os outros arquivos usam assim: require_once __DIR__ . '/conexao.php';
 // Depois disso a variável $pdo já está pronta para as consultas.
 
 // 1. Dados de acesso ao banco (padrão do XAMPP: usuário root e senha vazia).

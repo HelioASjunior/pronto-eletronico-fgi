@@ -1,7 +1,7 @@
 <?php
 // Sessão do usuário logado - PontoEletrônico
 // Arquivo: PHP/sessao.php
-// Os outros arquivos usam assim: require __DIR__ . '/sessao.php';
+// Os outros arquivos usam assim: require_once __DIR__ . '/sessao.php';
 //
 // A sessão guarda quem fez login. Depois do login ficam guardados:
 //   $_SESSION['id_funcionario']  -> id do funcionário no banco

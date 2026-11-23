@@ -6,8 +6,8 @@
 // A senha é opcional: em branco, continua a mesma.
 
 // 1. Carrega a conexão e a sessão.
-require __DIR__ . '/conexao.php';
-require __DIR__ . '/sessao.php';
+require_once __DIR__ . '/conexao.php';
+require_once __DIR__ . '/sessao.php';
 
 // 2. Só o administrador pode editar, e só com POST.
 exigirMetodo('POST');

@@ -5,8 +5,8 @@
 // O mês vai na URL: ponto_espelho.php?mes=2026-11 (sem mês = mês atual).
 
 // 1. Carrega a conexão e a sessão.
-require __DIR__ . '/conexao.php';
-require __DIR__ . '/sessao.php';
+require_once __DIR__ . '/conexao.php';
+require_once __DIR__ . '/sessao.php';
 
 // 2. Precisa estar logado, e só com GET.
 exigirMetodo('GET');
